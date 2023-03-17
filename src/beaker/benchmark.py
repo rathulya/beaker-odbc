@@ -200,12 +200,7 @@ class Benchmark:
         # 1. Query File Dir
         # 2. Query File
         # 3. Single Query
-        if self.query_file_dir is not None:
-            logging.info("Loading query files from directory.")
-            # TODO: Implement query directory parsing
-            # metrics_df = self._execute_queries_from_dir(self.query_file_dir)
-            metrics_df = self.spark.sparkContext.emptyRDD
-        elif self.query_file is not None:
+        if self.query_file is not None:
             logging.info("Loading query file.")
             metrics_df = self._execute_queries_from_file(self.query_file)
         elif self.query is not None:
