@@ -14,10 +14,9 @@ from beaker.spark_fixture import get_spark_session
 class Benchmark:
     """Encapsulates a query benchmark test."""
 
-    def __init__(self, name="Beaker Benchmark Test", query=None, query_file=None, query_file_dir=None, concurrency=1, db_hostname=None,
+    def __init__(self, query=None, query_file=None, query_file_dir=None, concurrency=1, db_hostname=None,
                  warehouse_http_path=None, token=None, catalog='hive_metastore', new_warehouse_config=None,
                  results_cache_enabled=False):
-        self.name = self._clean_name(name)
         self.query = query
         self.query_file = query_file
         self.query_file_dir = query_file_dir
@@ -53,15 +52,6 @@ class Benchmark:
         warehouse_utils.setToken(token=self.token)
         warehouse_utils.setHostname(hostname=self.hostname)
         return warehouse_utils.launch_warehouse(self.new_warehouse_config)
-
-    def _clean_name(self, name):
-        """Replaces spaces with underscores"""
-        name_lowered_stripped = name.lower().strip()
-        return re.sub(r"\s+", "_", name_lowered_stripped)
-
-    def setName(self, name):
-        """Sets the name of the Benchmark Test."""
-        self.name=self._clean_name(name)
 
     def setWarehouseConfig(self, config):
         """Launches a new cluster/warehouse from a JSON config."""
@@ -225,7 +215,6 @@ class Benchmark:
         object_str = f"""
     Benchmark Test:
     ------------------------
-    name={self.name}
     catalog={self.catalog}
     query="{self.query}"
     query_file={self.query_file}
