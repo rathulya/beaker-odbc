@@ -215,8 +215,6 @@ class Benchmark:
             raise ValueError("No query specified.")
         metrics_vw = f"{self.name}_vw"
         metrics_df.createOrReplaceTempView(metrics_vw)
-        logging.info(f"View `{metrics_vw}` has been created with benchmark results.")
-        print(f"Note: You can query the results of this benchmark test by querying the temporary view `{self.name}_vw`")
         return metrics_df
 
     def preWarmTables(self, tables):
