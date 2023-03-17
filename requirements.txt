@@ -1,3 +1,4 @@
+databricks-sql-connector
 pyodbc
 pyspark
 requests
