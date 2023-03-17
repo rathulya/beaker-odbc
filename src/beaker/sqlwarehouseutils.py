@@ -1,6 +1,6 @@
 import requests
 
-import pyodbc
+from databricks import sql
 
 class SQLWarehouseUtils:
 
@@ -16,19 +16,16 @@ class SQLWarehouseUtils:
     def _get_connection(self):
         # Enable/disable results caching on the SQL warehouse
         # https://docs.databricks.com/sql/admin/query-caching.html
-        conn = pyodbc.connect("Driver=/opt/simba/spark/lib/64/libsparkodbc_sb64.so;" +
-                              "HOST=" + self.hostname + ";" +
-                              "PORT=443;" +
-                              "Schema=default;" +
-                              "SparkServerType=3;" +
-                              "AuthMech=3;" +
-                              "UID=token;" +
-                              "PWD=" + self.access_token + ";" +
-                              "ThriftTransport=2;" +
-                              "SSL=1;" +
-                              "HTTPPath=" + self.http_path + "",
-                              autocommit=True)
-        return conn
+        if self.enable_results_caching:
+            results_caching = "true"
+        else:
+            results_caching = "false"
+        connection = sql.connect(
+            server_hostname=self.hostname,
+            http_path=self.http_path,
+            access_token=self.access_token,
+            session_configuration={"use_cached_result": results_caching})
+        return connection
 
     def execute_query(self, query_str):
         connection = self._get_connection()
