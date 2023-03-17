@@ -213,8 +213,6 @@ class Benchmark:
             metrics_df = self._execute_single_query(self.query)
         else:
             raise ValueError("No query specified.")
-        metrics_vw = f"{self.name}_vw"
-        metrics_df.createOrReplaceTempView(metrics_vw)
         return metrics_df
 
     def preWarmTables(self, tables):
