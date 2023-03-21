@@ -26,6 +26,7 @@ class SQLWarehouseUtils:
                               "PWD=" + self.access_token + ";" +
                               "ThriftTransport=2;" +
                               "SSL=1;" +
+                              "UseNativeQuery=1;" +
                               "HTTPPath=" + self.http_path + "",
                               autocommit=True)
         return conn
