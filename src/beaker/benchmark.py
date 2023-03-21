@@ -133,14 +133,6 @@ class Benchmark:
         query = f"USE CATALOG {self.catalog}"
         self._execute_single_query(query)
 
-    def _set_results_caching(self):
-        """Enables/disables results caching."""
-        if not self.results_cache_enabled:
-            query = "SET use_cached_result=false"
-        else:
-            query = "SET use_cached_result=true"
-        self._execute_single_query(query)
-
     def _parse_queries(self, raw_queries):
         split_raw = re.split(r"(Q\d+\n+)", raw_queries)[1:]
         split_clean = list(map(str.strip, split_raw))
@@ -204,8 +196,7 @@ class Benchmark:
         logging.info("Executing benchmark test.")
         # Set which Catalog to use
         self._set_default_catalog()
-        self._set_results_caching()
-
+        
         # Query format precedence:
         # 1. Query File Dir
         # 2. Query File
