@@ -30,8 +30,8 @@ class SQLWarehouseUtils:
                               "ThriftTransport=2;" +
                               "SSL=1;" +
                               "UseNativeQuery=1;" +
-                              "ConnCatalog =" + self.catalog + ";" +
-                              "ConnSchema=" + self.schema + ";" +
+                              "Catalog=" + self.catalog + ";" +
+                              "Schema=" + self.schema + ";" +
                               ("ssp_use_cached_result=False;" if not self.enable_results_caching else "ssp_use_cached_result=True;") +
                               "HTTPPath=" + self.http_path + "",
                               autocommit=True)
