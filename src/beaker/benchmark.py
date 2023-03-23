@@ -16,7 +16,7 @@ class Benchmark:
 
     def __init__(self, name="Beaker Benchmark Test", query=None, query_file=None, query_file_dir=None, concurrency=1, db_hostname=None,
                  warehouse_http_path=None, token=None, catalog='hive_metastore', new_warehouse_config=None,
-                 results_cache_enabled=True):
+                 results_cache_enabled=True, schema='default'):
         self.name = self._clean_name(name)
         self.query = query
         self.query_file = query_file
@@ -28,6 +28,7 @@ class Benchmark:
         self.catalog = catalog
         self.new_warehouse_config = new_warehouse_config
         self.results_cache_enabled = results_cache_enabled
+        self.schema = schema
         # Check if a new SQL warehouse needs to be created
         if new_warehouse_config is not None:
             self.setWarehouseConfig(new_warehouse_config)
@@ -120,7 +121,8 @@ class Benchmark:
         query = query.strip()
         logging.info(query)
         start_time = time.perf_counter()
-        sql_warehouse = SQLWarehouseUtils(self.hostname, self.http_path, self.token, self.results_cache_enabled)
+        sql_warehouse = SQLWarehouseUtils(self.hostname, self.http_path, self.token, self.results_cache_enabled,
+                                          catalog=self.catalog, schema=self.schema)
         sql_warehouse.execute_query(query)
         end_time = time.perf_counter()
         elapsed_time = f"{end_time - start_time:0.3f}"
@@ -196,7 +198,7 @@ class Benchmark:
         logging.info("Executing benchmark test.")
         # Set which Catalog to use
         self._set_default_catalog()
-        
+
         # Query format precedence:
         # 1. Query File Dir
         # 2. Query File

@@ -7,11 +7,14 @@ class SQLWarehouseUtils:
     _LATEST_RUNTIME = '11.3.x-photon-scala2.12'
     _CLUSTER_SIZES = ["2X-Small", "X-Small", "Small", "Medium", "Large", "X-Large", "2X-Large", "3X-Large", "4X-Large"]
 
-    def __init__(self, hostname=None, warehouse_http_path=None, token=None, enable_results_caching=False):
+    def __init__(self, hostname=None, warehouse_http_path=None, token=None, enable_results_caching=False,
+                 catalog="hive_metastore", schema='default'):
         self.hostname=hostname
         self.http_path=warehouse_http_path
         self.access_token=token
         self.enable_results_caching=enable_results_caching
+        self.catalog = catalog
+        self.schema = schema
 
     def _get_connection(self):
         # Enable/disable results caching on the SQL warehouse
@@ -27,6 +30,8 @@ class SQLWarehouseUtils:
                               "ThriftTransport=2;" +
                               "SSL=1;" +
                               "UseNativeQuery=1;" +
+                              "ConnCatalog =" + self.catalog + ";" +
+                              "ConnSchema=" + self.schema + ";" +
                               ("ssp_use_cached_result=False;" if not self.enable_results_caching else "ssp_use_cached_result=True;") +
                               "HTTPPath=" + self.http_path + "",
                               autocommit=True)
