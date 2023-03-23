@@ -134,8 +134,6 @@ class Benchmark:
     def _set_default_catalog(self):
         cat_query = f"USE CATALOG {self.catalog}"
         self._execute_single_query(cat_query)
-        schema_query = f"USE SCHEMA {self.schema}"
-        self._execute_single_query(schema_query)
 
     def _parse_queries(self, raw_queries):
         split_raw = re.split(r"(Q\d+\n+)", raw_queries)[1:]
