@@ -34,7 +34,6 @@ class SQLWarehouseUtils:
                               "Schema=" + self.schema + ";" + \
                               ("ssp_use_cached_result=False;" if not self.enable_results_caching else "ssp_use_cached_result=True;") + \
                               "HTTPPath=" + self.http_path + ""
-        print("Connecting with DSN: \n" + conn_string + "\n\n\n")
         conn = pyodbc.connect(conn_string, autocommit=True)
         return conn
 
