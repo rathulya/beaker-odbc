@@ -19,22 +19,23 @@ class SQLWarehouseUtils:
     def _get_connection(self):
         # Enable/disable results caching on the SQL warehouse
         # https://docs.databricks.com/sql/admin/query-caching.html
-        conn = pyodbc.connect("Driver=/opt/simba/spark/lib/64/libsparkodbc_sb64.so;" +
-                              "HOST=" + self.hostname + ";" +
-                              "PORT=443;" +
-                              "Schema=default;" +
-                              "SparkServerType=3;" +
-                              "AuthMech=3;" +
-                              "UID=token;" +
-                              "PWD=" + self.access_token + ";" +
-                              "ThriftTransport=2;" +
-                              "SSL=1;" +
-                              "UseNativeQuery=1;" +
-                              "Catalog=" + self.catalog + ";" +
-                              "Schema=" + self.schema + ";" +
-                              ("ssp_use_cached_result=False;" if not self.enable_results_caching else "ssp_use_cached_result=True;") +
-                              "HTTPPath=" + self.http_path + "",
-                              autocommit=True)
+        conn_string = "Driver=/opt/simba/spark/lib/64/libsparkodbc_sb64.so;" + \
+                              "HOST=" + self.hostname + ";" + \
+                              "PORT=443;" + \
+                              "Schema=default;" + \
+                              "SparkServerType=3;" + \
+                              "AuthMech=3;" + \
+                              "UID=token;" + \
+                              "PWD=" + self.access_token + ";" + \
+                              "ThriftTransport=2;" + \
+                              "SSL=1;" + \
+                              "UseNativeQuery=1;" + \
+                              "Catalog=" + self.catalog + ";" + \
+                              "Schema=" + self.schema + ";" + \
+                              ("ssp_use_cached_result=False;" if not self.enable_results_caching else "ssp_use_cached_result=True;") + \
+                              "HTTPPath=" + self.http_path + ""
+        print("Connecting with DSN: \n" + conn_string + "\n\n\n")
+        conn = pyodbc.connect(conn_string, autocommit=True)
         return conn
 
     def execute_query(self, query_str):
